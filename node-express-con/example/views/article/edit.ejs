@@ -1,0 +1,61 @@
+<%- include('../layouts/header.ejs') %>
+
+  <link rel="stylesheet" href="/node_modules/mditor/dist/css/mditor.min.css">
+  <script src="/node_modules/mditor/dist/js/mditor.min.js"></script>
+
+  <div class="container">
+    <div class="row">
+      <h1>编辑文章页</h1>
+      <hr>
+
+      <form id="form">
+        <!-- 预先保存的登录人的Id -->
+        <input type="hidden" name="id" value="<%= article.id %>">
+        <div class="form-group">
+          <label>文章标题:</label>
+          <input type="text" class="form-control" name="title" required value="<%= article.title %>">
+        </div>
+
+        <div class="form-group">
+          <label>文章内容:</label>
+          <!-- mditor     m  : markdown    ditor  :   editor    -->
+          <textarea class="form-control" name="content" id="editor"><%= article.content %></textarea>
+        </div>
+
+        <div class="form-group clearfix">
+          <input type="submit" value="保存文章" class="btn btn-primary pull-right">
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    $(function () {
+      // 初始化一个 Markdown 编辑器
+      var mditor = Mditor.fromTextarea(document.getElementById('editor'));
+
+      // 监听表单的Post默认提交行为，阻止，并手动发起Ajax
+      $('#form').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+          url: '/article/edit',
+          type: 'post',
+          data: $(this).serialize(),
+          dataType: 'json',
+          success: function (results) {
+            //   {err_code: 0 , msg: ''}
+            if (results.err_code === 0) {
+              // 保存文章OK后，默认会跳转到文章详情页面
+              location.href = '/article/info?id=<%= article.id %>'
+            } else {
+              alert(results.msg)
+            }
+          }
+        })
+      })
+    });
+  </script>
+
+  <%- include('../layouts/footer.ejs') %>
