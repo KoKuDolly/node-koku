@@ -1,0 +1,8 @@
+env:
+  browser: true
+  node: true
+rules:
+  no-tabs: 1
+  quotes:
+    - error
+    - single

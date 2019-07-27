@@ -1,5 +1,7 @@
 const userModel = require('../model/userModel.js')
 
+const common = require('../common.js')
+
 module.exports = {
   showRegisterPage (req, res) {
     res.render('user/register', {})
@@ -13,6 +15,7 @@ module.exports = {
       if (userCounts !== 0) {
         res.json({code: 1, message: '用户名重复，请换一个！'})
       } else {
+        user.password = common.md5Encode(user.password)
         userModel.addNewUser(user, (err, result) => {
           if (err) {
             res.json({code: 1, message: '注册失败！'})
@@ -28,21 +31,25 @@ module.exports = {
   },
   login (req, res) {
     const user = req.body
+    user.password = common.md5Encode(user.password)
     userModel.login(user, (err, result) => {
       if (err) {
         res.json({code: 1, message: '登录失败！'})
       } else {
         const len = result.length
-        console.log(result)
         if (len === 0) {
           res.json({code: 1, message: '登录失败！'})
         } else {
+          req.session.isLogin = true
+          req.session.user = result[0]
           res.json({code: 0, message: '登录成功！'})
         }
       }
     })
   },
   logout (req, res) {
-
+    req.session.destroy(err => {
+      res.redirect('/')
+    })
   }
 }

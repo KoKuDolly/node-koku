@@ -4,10 +4,12 @@ const userModel = require('../model/userModel.js')
 const common = require('../common.js')
 
 module.exports = {
-  showRegisterPage(req, res) { // 渲染注册页面
+  showRegisterPage(req, res) {
+    // 渲染注册页面
     res.render('./user/register', {})
   },
-  register(req, res) { // 实现用户的注册
+  register(req, res) {
+    // 实现用户的注册
     // 分析：
     //  1. 先拿到表单数据？？？ 怎么拿？？？
     // 原生： req.on('data/end')    第三方的中间件  body-parser
@@ -25,8 +27,12 @@ module.exports = {
       }
       console.log(results)
 
-      if (results[0].totalcount !== 0) { // 用户名已经被占用
-        return res.json({ err_code: 1, msg: '用户名已经被占用，请更换其他用户名！' })
+      if (results[0].totalcount !== 0) {
+        // 用户名已经被占用
+        return res.json({
+          err_code: 1,
+          msg: '用户名已经被占用，请更换其他用户名！',
+        })
       }
 
       // 对用户身上的密码，保存到数据前，先进行 MD5 加密操作
@@ -46,10 +52,12 @@ module.exports = {
       })
     })
   },
-  showLoginPage(req, res) { // 显示登录页面
+  showLoginPage(req, res) {
+    // 显示登录页面
     res.render('user/login', {})
   },
-  login(req, res) { // 实现登录业务逻辑
+  login(req, res) {
+    // 实现登录业务逻辑
     // 分析：
     // 1. 获取表单数据
     // 2. 根据用户名和密码，调用 Model 方法查看用户信息是否正确
@@ -62,7 +70,8 @@ module.exports = {
     info.password = common.md5Encode(info.password)
 
     userModel.login(info, (err, results) => {
-      if (err || results.length !== 1) return res.json({ err_code: 1, msg: '登录失败！' })
+      if (err || results.length !== 1)
+        return res.json({ err_code: 1, msg: '登录失败！' })
 
       // 当我们 注册完 express-session 之后，就可以使用 req.session 来保存登录状态了
       // console.log(results)
@@ -76,9 +85,10 @@ module.exports = {
       res.json({ err_code: 0, msg: 'ok' })
     })
   },
-  logout(req, res){ // 注销登录
-    req.session.destroy((err)=>{
+  logout(req, res) {
+    // 注销登录
+    req.session.destroy(err => {
       res.redirect('/')
     })
-  }
+  },
 }

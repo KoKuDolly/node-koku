@@ -2,12 +2,12 @@
 const mysql = require('mysql')
 
 const conn = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '1234',
-  database: 'heima_blog_1022_am',
-  multipleStatements: true, // 启用多条Sql语句同时执行的功能
-  rejectUnauthorized: false
+    host: 'localhost',
+    user: 'root',
+    password: '0918',
+    database: 'kkdl_blog',
+    multipleStatements: true, // 启用多条Sql语句同时执行的功能
+    rejectUnauthorized: false
 })
 
 module.exports = conn
