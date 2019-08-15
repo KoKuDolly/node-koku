@@ -34,5 +34,5 @@ fs.readdir(path.join(__dirname, './router'), function(err, filenames) {
 // app.use(userRouter)
 
 app.listen(3003, function() {
-  console.log('server running at http://127.0.0.1:3003')
+  console.log('server running at http://127.1.1.1:3003')
 })
