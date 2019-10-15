@@ -10,4 +10,8 @@ module.exports = {
     this.counts++
     console.log('qingqiule', this.counts)
   },
+  handleReport (req, res) {
+    res.set('Access-Control-Allow-Origin', '*')
+    res.json({code: '000001', data: {}, message: '生成报告失败'})
+  }
 }
